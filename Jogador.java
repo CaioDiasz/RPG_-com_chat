@@ -8,7 +8,7 @@ public class Jogador {
         this.nome = nome;
         this.vida = 100; // Vida inicial
         this.experiencia = 0; // Experiência inicial
-        this.areaAtual = "Início"; // Começa na área "Início"
+        this.areaAtual = "Começo"; // Começa na área "Início"
     }
 
     public void receberDano(int dano) {

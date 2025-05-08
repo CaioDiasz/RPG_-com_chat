@@ -1,0 +1,41 @@
+public class Jogo {
+    private Jogador jogador;
+    private Area[] mapa;
+    private int areaAtual;
+
+    public Jogo(String nomeJogador) {
+        jogador = new Jogador(nomeJogador);
+        areaAtual = 0; // Começa na primeira área do mapa
+        mapa = new Area[] {
+            new Area("Floresta", "Uma floresta tranquila.", "Fácil", false, true),
+            new Area("Caverna", "Uma caverna escura e perigosa.", "Média", true, false),
+            new Area("Vila", "Uma vila acolhedora.", "Fácil", false, false),
+            new Area("Montanha", "Uma montanha cheia de desafios.", "Difícil", true, true)
+        };
+    }
+
+    public void moverParaProximaArea() {
+        if (areaAtual < mapa.length - 1) {
+            areaAtual++;
+            jogador.moverPara(mapa[areaAtual].getNome());
+            mapa[areaAtual].exibeFichaTecnica(); // Exibe as informações da nova área
+            mapa[areaAtual].interagir(); // Interage com a nova área
+        } else {
+            System.out.println("Você já está na última área do jogo!");
+        }
+    }
+
+    public void mostrarStatus() {
+        System.out.println("Nome: " + jogador.getNome());
+        System.out.println("Vida: " + jogador.getVida());
+        System.out.println("Experiência: " + jogador.getExperiencia());
+        System.out.println("Área Atual: " + jogador.getAreaAtual());
+    }
+
+    public void iniciarJogo() {
+        System.out.println("Bem-vindo, " + jogador.getNome() + "!");
+        mostrarStatus();
+        moverParaProximaArea(); // Vai para a primeira área
+        mostrarStatus();
+    }
+}

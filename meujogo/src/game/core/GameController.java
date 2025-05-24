@@ -9,22 +9,24 @@ import java.util.Scanner;
 
 public class GameController {
 
-    // Constantes do Jogo
     private static final int FINAL_POSITION = 100;
     private static final int POINTS_PER_CORRECT_ANSWER = 10;
     private static final int POINTS_PER_BOSS_DEFEATED = 50;
-    private static final int INITIAL_CHANCES = 10; // Chances iniciais do jogador
+    private static final int INITIAL_CHANCES = 10;
     private static final int MAX_DICE_ROLL = 3; // Dado rola até 3
 
     private Player player;
     private Quiz quiz;
     private Board board;
     private Scanner scanner;
+    private Random random;
+    private Zone currentZone; // Para rastrear a zona atual do jogador e detectar mudança
 
     public GameController() {
         this.quiz = new Quiz();
         this.board = new Board();
         this.scanner = new Scanner(System.in);
+        this.random = new Random();
     }
 
     public void startGame() {
@@ -35,6 +37,12 @@ public class GameController {
         System.out.println("🌀 Bem-vindo ao Gaia's Codex, " + player.getName() + "!");
         System.out.println("🎯 Avance pelas zonas, responda aos quizzes e vença todos os bosses!");
 
+        // Inicializa a zona atual
+        currentZone = board.getZoneByPosition(player.getPosition());
+        if (currentZone != null) {
+            System.out.println("\n🌎 Você entrou na área: " + currentZone.getName() + "!");
+        }
+
         while (player.getPosition() < FINAL_POSITION && player.hasChances()) {
             displayPlayerStatus();
             System.out.print("🎲 Pressione Enter para rolar o dado...");
@@ -42,30 +50,45 @@ public class GameController {
 
             int roll = rollDice();
             System.out.println("🎲 Você rolou: " + roll);
-            player.move(roll);
+
+            int newPotentialPosition = player.getPosition() + roll;
+            
+            // Verifica a zona de destino antes de mover o jogador
+            Zone nextZone = board.getZoneByPosition(newPotentialPosition);
+            
+            // Lógica para forçar parada no boss (se a zona não foi derrotada)
+            boolean movedIntoOrPastBossZone = false;
+            if (nextZone != null && !nextZone.isBossDefeated() && newPotentialPosition >= nextZone.getEndHouse()) {
+                player.setPosition(nextZone.getEndHouse()); // Teleporta para a casa do boss
+                movedIntoOrPastBossZone = true;
+                System.out.println("🚨 Você atingiu a área do boss da " + nextZone.getName() + "!");
+            } else {
+                player.move(roll); // Movimento normal
+            }
 
             System.out.println("🏠 Você está na casa " + player.getPosition());
 
-            // Verifica se o jogador atingiu ou passou por um boss (casa final da zona)
-            // A lógica de forçar a parada no boss está implícita no loop do jogo,
-            // pois o jogador só pode avançar depois de enfrentar o boss da zona.
-            handleZoneEvent();
-            if (!player.hasChances()) {
-                System.out.println("💀 Você perdeu todas as chances durante um confronto com o boss.");
-                break;
+            // Verifica se o jogador entrou em uma nova zona
+            Zone newCurrentZone = board.getZoneByPosition(player.getPosition());
+            if (newCurrentZone != null && newCurrentZone != currentZone) {
+                currentZone = newCurrentZone;
+                System.out.println("\n🌎 Você entrou na área: " + currentZone.getName() + "!");
             }
 
-            // Pergunta de casa (se houver, e se o jogador não estiver exatamente na casa de um boss)
-            // A ordem aqui é importante: se o jogador cair na casa final da zona, o boss é priorizado.
-            // Para garantir que cada casa tenha uma pergunta, a lógica pode ser mais complexa
-            // ou assumir que as perguntas de casa são "genéricas" ou mapeadas a casas específicas.
-            // No seu DOCX, as perguntas estão agrupadas por "Mundo", não por casa individual.
-            // Vou manter a lógica de ter perguntas associadas às casas de uma zona,
-            // mas o foco principal são as perguntas do boss e as perguntas gerais da zona.
-            handleHouseQuestion(); // As perguntas de casa são agora as perguntas gerais do mundo/zona
-            if (!player.hasChances()) {
-                System.out.println("💀 Você perdeu todas as chances respondendo uma pergunta de casa.");
-                break;
+            // Prioriza o evento do boss se o jogador parou na casa do boss e ele ainda não foi derrotado
+            if (movedIntoOrPastBossZone || (currentZone != null && player.getPosition() == currentZone.getEndHouse() && !currentZone.isBossDefeated())) {
+                handleZoneEvent();
+                if (!player.hasChances()) {
+                    System.out.println("💀 Você perdeu todas as chances durante um confronto com o boss.");
+                    break; // Game Over
+                }
+            } else {
+                // Se não é a casa do boss, tenta fazer uma pergunta de casa
+                handleHouseQuestion();
+                if (!player.hasChances()) {
+                    System.out.println("💀 Você perdeu todas as chances respondendo uma pergunta de casa.");
+                    break; // Game Over
+                }
             }
         }
 
@@ -79,54 +102,47 @@ public class GameController {
     }
 
     private int rollDice() {
-        Random random = new Random();
         return random.nextInt(MAX_DICE_ROLL) + 1; // Dado rola de 1 a MAX_DICE_ROLL
     }
 
     private void handleHouseQuestion() {
         Zone currentZone = board.getZoneByPosition(player.getPosition());
         if (currentZone != null) {
-            // Para garantir que perguntas sejam feitas, mesmo que o jogador não caia
-            // exatamente na casa final do boss, ou em casas específicas.
-            // A lógica atual do getQuestionForHouse() ainda mapeia casa a pergunta por índice.
-            // Se as perguntas do DOCX são apenas "perguntas gerais da zona",
-            // então a cada vez que o jogador está em uma zona, uma pergunta aleatória dessa zona pode ser feita.
-            // Por simplicidade, vou manter o mapeamento por índice, mas entenda que isso pode
-            // não corresponder exatamente ao número de casas vs. número de perguntas em cada "mundo" no DOCX.
-            Question questionForHouse = board.getQuestionForHouse(player.getPosition());
+            Question questionForHouse = currentZone.getNextAvailableQuestion(); // Pega a próxima pergunta disponível
             if (questionForHouse != null) {
-                System.out.println("💡 Pergunta da Casa: " + questionForHouse.getQuestionText());
+                System.out.println("💡 Pergunta da Casa (" + currentZone.getName() + "): " + questionForHouse.getQuestionText());
                 boolean correct = quiz.askQuestion(questionForHouse);
                 if (correct) {
                     player.gainPoints(POINTS_PER_CORRECT_ANSWER);
                 } else {
                     player.loseChance();
                 }
+            } else {
+                System.out.println("🍃 Esta casa está tranquila. Não há mais perguntas disponíveis nesta área.");
             }
         }
     }
 
     private void handleZoneEvent() {
         Zone currentZone = board.getZoneByPosition(player.getPosition());
-        // Verifica se o jogador atingiu ou passou a casa final da zona
-        // E se o boss dessa zona ainda não foi derrotado (precisamos de um mecanismo para isso)
-        // Para a obrigatoriedade de passar pelo boss, a lógica pode ser um pouco mais sofisticada.
-        // Uma forma simples é garantir que o boss só seja enfrentado UMA VEZ ao entrar/passar a casa final da zona.
-        // Podemos adicionar um estado "bossDefeated" na própria Zone ou no Player.
-        if (currentZone != null && player.getPosition() >= currentZone.getEndHouse() && !currentZone.isBossDefeated()) {
+        if (currentZone != null && player.getPosition() == currentZone.getEndHouse() && !currentZone.isBossDefeated()) {
             Boss boss = currentZone.getBoss();
-            System.out.println("\n⚔️ BOSS: " + boss.getName() + " apareceu!");
+            System.out.println("\n⚔️ BOSS: " + boss.getName() + " apareceu na " + currentZone.getName() + "!");
             boolean bossDefeatedSuccessfully = true;
 
-            for (Question question : boss.getQuestions()) {
-                System.out.println("\nDesafio do BOSS: " + question.getQuestionText());
-                boolean correct = quiz.askQuestion(question);
-                if (!correct) {
-                    System.out.println("😵 Você falhou contra o boss e perdeu 1 chance.");
-                    player.loseChance();
-                    bossDefeatedSuccessfully = false; // Falhou em uma pergunta do boss
-                    break; // Sai do loop de perguntas do boss
+            if (boss.getQuestions().length > 0) {
+                for (Question question : boss.getQuestions()) {
+                    System.out.println("\nDesafio do BOSS: " + question.getQuestionText());
+                    boolean correct = quiz.askQuestion(question);
+                    if (!correct) {
+                        System.out.println("😵 Você falhou contra o boss e perdeu 1 chance.");
+                        player.loseChance();
+                        bossDefeatedSuccessfully = false;
+                        break;
+                    }
                 }
+            } else {
+                System.out.println("O boss não tem perguntas, ele é derrotado automaticamente!");
             }
 
             if (bossDefeatedSuccessfully) {
@@ -134,24 +150,21 @@ public class GameController {
                 player.gainPoints(POINTS_PER_BOSS_DEFEATED);
                 currentZone.setBossDefeated(true); // Marca o boss da zona como derrotado
             } else {
+                System.out.println("Você não derrotou o boss e permanece na casa " + player.getPosition() + ".");
                 if (!player.hasChances()) {
                     System.out.println("💀 Você perdeu todas as chances e não conseguiu derrotar o boss.");
                 }
-                // Se o boss não foi derrotado, o jogador deve permanecer na posição para tentar novamente
-                // ou enfrentar outro desafio. Por simplicidade, o jogo continua, mas com chance reduzida.
-                // Para *forçar* a parada, o player.move() precisaria ser ajustado para "parar"
-                // na casa do boss, ou o jogo loopar até o boss ser vencido.
-                // A lógica atual permite continuar (se tiver chances), mas não avança o boss.
             }
         }
     }
 
     private void endGame() {
         if (player.getPosition() >= FINAL_POSITION) {
-            System.out.println("🎉 Parabéns, " + player.getName() + "! Você completou Gaia's Codex!");
+            System.out.println("\n🎉 Parabéns, " + player.getName() + "! Você completou Gaia's Codex!");
             System.out.println("⭐ Pontuação final: " + player.getPoints());
         } else {
-            System.out.println("Game over! Você não tem mais chances.");
+            System.out.println("\nGame over! Você não tem mais chances.");
+            System.out.println("⭐ Pontuação final: " + player.getPoints());
         }
         scanner.close();
     }

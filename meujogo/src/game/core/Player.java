@@ -21,6 +21,10 @@ public class Player {
         return position;
     }
 
+    public void setPosition(int position) { // Novo setter para ajustar a posição
+        this.position = position;
+    }
+
     public void move(int steps) {
         position += steps;
         // Garante que o jogador não ultrapasse a posição final se rolar um dado muito alto

@@ -3,12 +3,10 @@ package meujogo.src.game.entities;
 import meujogo.src.game.core.Zone;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.Random; // Embora não usado diretamente aqui, mantemos se for usado em Zone ou Question
 
 public class Board {
     private List<Zone> zones;
-    // Removido 'random' daqui, pois cada Zone terá seu próprio, se necessário para a lógica de 'availableQuestions'
-    // Mas a lógica de pegar pergunta será feita no GameController através de Zone.getNextAvailableQuestion()
 
     public Board() {
         this.zones = createZones();
@@ -35,7 +33,7 @@ public class Board {
         // Casas: 21 a 40
         Question[] terrasObscurasQuestions = {
             new Question("Em qual cidade foi causada o maior acidente nuclear da história?", new String[]{"Hiroshima.", "Nagasaki.", "Chernobyl.", "Fukushima.", "Three Mile Island."}, "Chernobyl."),
-            new Question("Em qual das opções abaixo, a energia nuclear é mais usada?", new String[]{"Geração de energia elétrica e propulsão de submarinos.", "Cozinhar alimentos e aquecer casas.", "Cozinhar alimentos e aquecer casas.", "Construção de carros e fabricação de roupas.", "Produção de brinquedos e jogos.", "Limpeza de rios e lagos."}, "Geração de energia elétrica e propulsão de submarinos."),
+            new Question("Em qual das opções abaixo, a energia nuclear é mais usada?", new String[]{"Geração de energia elétrica e propulsão de submarinos.", "Cozinhar alimentos e aquecer casas.", "Construção de carros e fabricação de roupas.", "Produção de brinquedos e jogos.", "Limpeza de rios e lagos."}, "Geração de energia elétrica e propulsão de submarinos."),
             new Question("A energia eólica é uma das fontes de energia renovável que mais cresce no mundo. Qual é a principal vantagem da energia eólica?", new String[]{"Não causa impacto ambiental, pois não emite gases de efeito estufa durante a operação.", "É a energia mais barata para ser produzida.", "Pode ser usada em qualquer lugar do mundo.", "Não ocupa espaço na paisagem.", "É a mais fácil de armazenar."}, "Não causa impacto ambiental, pois não emite gases de efeito estufa durante a operação.")
         };
         Question[] demonioNuclearBossQuestions = {
@@ -61,7 +59,9 @@ public class Board {
         // Casas: 61 a 80
         Question[] florestaIncendiadaQuestions = {
             new Question("Quais são as principais causas do desmatamento na Amazônia?", new String[]{"Crescimento urbano e industrialização descontrolada.", "Expansão da agricultura e pecuária, exploração madeireira ilegal e grilagem de terras.", "Aumento da população de animais silvestres.", "Desastres naturais como terremotos.", "Chuva ácida."}, "Expansão da agricultura e pecuária, exploração madeireira ilegal e grilagem de terras."),
-            new Question("Como o desmatamento pode afetar o clima global?", new String[]{"Aumentando a produção de oxigênio e diminuindo a temperatura.", "Reduzindo a biodiversidade e liberando gases de efeito estufa, contribuindo para o aquecimento global.", "Intensificando as chuvas na floresta.", "Facilitando a infiltração da água no solo.", "Tornando os rios mais limpos."}, "Reduzindo a biodiversidade e liberando gases de efeito estufa, contribuindo para o aquecimento global.")
+            new Question("Como o desmatamento pode afetar o clima global?", new String[]{"Aumentando a produção de oxigênio e diminuindo a temperatura.", "Reduzindo a biodiversidade e liberando gases de efeito estufa, contribuindo para o aquecimento global.", "Intensificando as chuvas na floresta.", "Facilitando a infiltração da água no solo.", "Tornando os rios mais limpos."}, "Reduzindo a biodiversidade e liberando gases de efeito estufa, contribuindo para o aquecimento global."),
+            // Nova pergunta para o Quarto Mundo: Amazônia Ardente
+            new Question("Qual é o impacto global do desmatamento e das queimadas na Amazônia em relação às mudanças climáticas?", new String[]{"Aumenta a produção de oxigênio, equilibrando os níveis de CO₂ na atmosfera.", "Reduz a biodiversidade local, mas não afeta o clima global.", "Libera grandes quantidades de CO₂, reduz a capacidade de absorção de carbono alternado o clima em escala planetária.", "Piora a qualidade do solo, favorecendo a agricultura em outras regiões.", "Não há evidências científicas que liguem a Amazônia ao clima global."}, "Libera grandes quantidades de CO₂, reduz a capacidade de absorção de carbono alternado o clima em escala planetária.")
         };
         Question[] incendiariosBossQuestions = {
             new Question("Como o desmatamento afeta o regime hídrico e as chuvas na região amazônica?", new String[]{"Intensificam as chuvas na floresta.", "Reduzem a evapotranspiração, diminuem a formação de chuvas e afetam o regime hídrico regional.", "Facilitam a infiltração da água no solo, fortalecendo os lençóis freáticos.", "Tornam os rios mais limpos ao evaporar impurezas com o calor.", "Não há impacto significativo."}, "Reduzem a evapotranspiração, diminuem a formação de chuvas e afetam o regime hídrico regional.")
@@ -73,7 +73,9 @@ public class Board {
         // Casas: 81 a 100 (Final)
         Question[] santuarioCapivarasQuestions = {
             new Question("Quais são os principais animais vítimas de caçadores ilegais?", new String[]{"Veado-catingueiro, boi, papagaio-do-mato e galinha-d’água, por sua capacidade de adaptação.", "Capivara, vaca, pombo e cachorro-do-mato, devido ao controle de pragas urbanas.", "Tamanduá-bandeira, peixe-boi, minhoca e coruja, usados como animais domésticos.", "Jacaré, jiboia, cavalo-marinho e siri, por sua toxina venenosa.", "Onça-pintada, tatu-bola, jacaré e arara-azul, por causa de sua pele, carne ou valor no mercado ilegal."}, "Onça-pintada, tatu-bola, jacaré e arara-azul, por causa de sua pele, carne ou valor no mercado ilegal."),
-            new Question("Como o tráfico de animais silvestres afeta o equilíbrio ecológico dos biomas brasileiros?", new String[]{"Gera alterações locais, mas contribui para manter o controle populacional de algumas espécies.", "Pode interferir nos processos naturais de reprodução e dispersão, afetando cadeias ecológicas de forma silenciosa, mas significativa.", "Não causa efeitos diretos significativos, desde que os animais não sejam retirados em grande número.", "Pode ser compensado pela reprodução em cativeiro.", "Apenas afeta espécies de pequeno porte."}, "Pode interferir nos processos naturais de reprodução e dispersão, afetando cadeias ecológicas de forma silenciosa, mas significativa.")
+            new Question("Como o tráfico de animais silvestres afeta o equilíbrio ecológico dos biomas brasileiros?", new String[]{"Gera alterações locais, mas contribui para manter o controle populacional de algumas espécies.", "Pode interferir nos processos naturais de reprodução e dispersão, afetando cadeias ecológicas de forma silenciosa, mas significativa.", "Não causa efeitos diretos significativos, desde que os animais não sejam retirados em grande número.", "Pode ser compensado pela reprodução em cativeiro.", "Apenas afeta espécies de pequeno porte."}, "Pode interferir nos processos naturais de reprodução e dispersão, afetando cadeias ecológicas de forma silenciosa, mas significativa."),
+            // Nova pergunta para o Quinto Mundo: Santuário em Ruínas das Capivaras
+            new Question("Como a fragmentação de habitats naturais prejudica espécies ameaçadas, como a onça-pintada e a arara-azul?", new String[]{"Porque reduz a disponibilidade de alimentos industrializados para os animais.", "Porque limita o espaço para turistas observarem os animais em cativeiro.", "Porque os animais preferem áreas verdes urbanas para se adaptarem mais rápido.", "Porque isola populações, dificulta a reprodução, aumenta a competição por recursos e eleva o risco de extinção.", "Porque facilita o controle de doenças entre as espécies nativas."}, "Porque isola populações, dificulta a reprodução, aumenta a competição por recursos e eleva o risco de extinção.")
         };
         Question[] cacadoresIlegaisBossQuestions = {
             new Question("Quais são as consequências da perda de biodiversidade para o meio ambiente e para a humanidade?", new String[]{"Não há consequências, pois a natureza se adapta rapidamente.", "Aumenta a resistência dos ecossistemas a mudanças climáticas.", "Compromete serviços ecossistêmicos essenciais, como polinização, purificação da água e controle de pragas, afetando a saúde humana e a economia.", "Gera novas espécies mais resistentes.", "Melhora a qualidade do solo."}, "Compromete serviços ecossistêmicos essenciais, como polinização, purificação da água e controle de pragas, afetando a saúde humana e a economia.")
@@ -91,16 +93,4 @@ public class Board {
         }
         return null;
     }
-
-    // Este método não é mais necessário da forma antiga, pois a lógica de "pergunta de casa"
-    // será gerenciada diretamente pela Zone.getNextAvailableQuestion()
-    /*
-    public Question getQuestionForHouse(int position) {
-        Zone currentZone = getZoneByPosition(position);
-        if (currentZone != null && currentZone.getQuestions().length > 0) {
-            return currentZone.getQuestions()[random.nextInt(currentZone.getQuestions().length)];
-        }
-        return null;
-    }
-    */
 }

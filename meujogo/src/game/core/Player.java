@@ -6,11 +6,11 @@ public class Player {
     private int points;
     private int chances;
 
-    public Player(String name) {
+    public Player(String name, int initialChances) {
         this.name = name;
         this.position = 0;
         this.points = 0;
-        this.chances = 10; // total de chances (vidas)
+        this.chances = initialChances; // total de chances (vidas)
     }
 
     public String getName() {
@@ -23,6 +23,7 @@ public class Player {
 
     public void move(int steps) {
         position += steps;
+        // Garante que o jogador não ultrapasse a posição final se rolar um dado muito alto
         if (position > 100) {
             position = 100;
         }
@@ -33,11 +34,15 @@ public class Player {
     }
 
     public void gainPoints(int value) {
-        points += value;
+        if (value > 0) {
+            points += value;
+        }
     }
 
     public void loseChance() {
-        chances--;
+        if (chances > 0) {
+            chances--;
+        }
     }
 
     public int getChances() {

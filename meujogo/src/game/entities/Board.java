@@ -1,82 +1,80 @@
 package meujogo.src.game.entities;
 
-import meujogo.src.game.entities.Question;
-import meujogo.src.game.entities.Boss;
 import meujogo.src.game.core.Zone;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
-    private Zone[] zones;
+    private List<Zone> zones;
 
     public Board() {
         this.zones = createZones();
     }
 
-    private Zone[] createZones() {
-        return new Zone[] {
-            new Zone(
-                "Floresta de Gaia", 1, 16,
-                new Question[] {
-                    new Question("O que é o desmatamento?", new String[]{"Cortar árvores", "Plantar árvores", "Regar plantas"}, "Cortar árvores"),
-                    new Question("Por que as florestas são importantes?", new String[]{"Para madeira", "Para gerar oxigênio", "Para construir cidades"}, "Para gerar oxigênio"),
-                    new Question("O que é biodiversidade?", new String[]{"Variedade de seres vivos", "Quantidade de árvores", "Quantidade de espécies extintas"}, "Variedade de seres vivos")
-                },
-                new Boss("Rainha Dryad", new Question[]{
-                    new Question("O que acontece quando as florestas desaparecem?", new String[]{"Mais oxigênio", "Menos biodiversidade", "Mais chuva"}, "Menos biodiversidade")
-                })
-            ),
-            new Zone(
-                "Caverna de Hades", 17, 33,
-                new Question[] {
-                    new Question("O que causa a poluição do ar?", new String[]{"Plantar árvores", "Queimar combustíveis fósseis", "Usar bicicletas"}, "Queimar combustíveis fósseis"),
-                    new Question("Qual é um efeito da poluição?", new String[]{"Ar limpo", "Chuva ácida", "Solo fértil"}, "Chuva ácida"),
-                    new Question("Como podemos reduzir a poluição?", new String[]{"Usando mais carros", "Usando menos energia", "Queimando mais lixo"}, "Usando menos energia")
-                },
-                new Boss("Espectro da Fumaça", new Question[]{
-                    new Question("Qual é um efeito da poluição?", new String[]{"Ar limpo", "Chuva ácida", "Solo fértil"}, "Chuva ácida")
-                })
-            ),
-            new Zone(
-                "Rio de Estige", 34, 50,
-                new Question[] {
-                    new Question("Onde deve ir a água suja?", new String[]{"Nos rios", "Nas estações de tratamento", "No mar"}, "Nas estações de tratamento"),
-                    new Question("O que é esgoto?", new String[]{"Água limpa", "Água suja", "Água de qualidade"}, "Água suja")
-                },
-                new Boss("Serpente das Inundações", new Question[]{
-                    new Question("O que acontece com esgoto não tratado?", new String[]{"A água fica limpa", "A água fica suja", "Gera energia"}, "A água fica suja")
-                })
-            ),
-            new Zone(
-                "Céu de Zeus", 51, 67,
-                new Question[] {
-                    new Question("Qual energia é renovável?", new String[]{"Carvão", "Solar", "Petróleo"}, "Solar"),
-                    new Question("O que é energia eólica?", new String[]{"Não renovável", "Limpa e renovável", "Perigosa"}, "Limpa e renovável"),
-                    new Question("O que é uma energia limpa?", new String[]{"Energia solar", "Energia a carvão", "Energia nuclear"}, "Energia solar")
-                },
-                new Boss("Titã da Tempestade", new Question[]{
-                    new Question("O que é energia solar?", new String[]{"Não renovável", "Limpa e renovável", "Perigosa"}, "Limpa e renovável")
-                })
-            ),
-            new Zone(
-                "Templo de Deméter", 68, 84,
-                new Question[] {
-                    new Question("Qual alimento é ecológico?", new String[]{"Fast food", "Comida orgânica local", "Lanches industrializados"}, "Comida orgânica local"),
-                    new Question("O que é agricultura sustentável?", new String[]{"Usar agrotóxicos", "Usar rotação de culturas", "Queimar florestas"}, "Usar rotação de culturas")
-                },
-                new Boss("Golem da Colheita", new Question[]{
-                    new Question("O que melhora a saúde do solo?", new String[]{"Pesticidas", "Compostagem", "Queima de lixo"}, "Compostagem")
-                })
-            ),
-            new Zone(
-                "Cidadela de Cronos", 85, 100,
-                new Question[] {
-                    new Question("O que é sustentabilidade?", new String[]{"Usar tudo rápido", "Equilibrar o presente e o futuro", "Evitar responsabilidade"}, "Equilibrar o presente e o futuro"),
-                    new Question("Como podemos ajudar o meio ambiente?", new String[]{"Reciclando", "Desperdiçando", "Comprando mais coisas"}, "Reciclando")
-                },
-                new Boss("Cronos", new Question[]{
-                    new Question("Qual é um hábito sustentável?", new String[]{"Desperdiçar água", "Reciclar", "Consumir demais"}, "Reciclar")
-                })
-            )
+    private List<Zone> createZones() {
+        List<Zone> zoneList = new ArrayList<>();
+
+        // --- Primeiro Mundo: Montanha do Desperdício (Reciclagem) ---
+        // Vilão: Golem de Sucata
+        // Perguntas gerais da zona
+        Question[] montanhaDesperdicioQuestions = {
+            new Question("Escolha a opção que descreve as cores corretas das latas de lixo recicláveis:", new String[]{"Azul – metal; Vermelha – vidro; Verde – papel; Amarela - plástico.", "Verde – papel; Azul – vidro; Vermelha – metal; Amarela - plástico.", "Azul – vidro; Verde - plástico; Amarela – papel; Vermelha – metal.", "Azul - plástico; Vermelha – papel; Verde – metal; Amarela – vidro.", "Azul – papel; Vermelha - plástico; Verde – vidro; Amarela – metal."}, "Azul – papel; Vermelha - plástico; Verde – vidro; Amarela – metal."),
+            new Question("Qual é o jeito certo de reciclar um lixo?", new String[]{"Jogando tudo no lixo verde, já que ele é reciclável.", "Separando os resíduos por tipo, limpando e colocando nas lixeiras corretas.", "Lavar o lixo com detergente e jogar na pia.", "Queimar todo o lixo em casa para reduzir o volume.", "Enterrar o lixo no quintal para virar adubo."}, "Separando os resíduos por tipo, limpando e colocando nas lixeiras corretas."),
+            new Question("Para onde vão os lixos que não são descartados corretamente?", new String[]{"São levados automaticamente para a reciclagem por caminhões.", "Para rios, mares ou ficam espalhados no meio ambiente, causando poluição.", "São reaproveitados por animais para construção de abrigos.", "São usados pelas prefeituras como decoração urbana.", "Evaporam com o tempo e não causam impacto ambiental."}, "Para rios, mares ou ficam espalhados no meio ambiente, causando poluição.")
         };
+        // Pergunta do Boss
+        Question[] golemSucataBossQuestions = {
+            new Question("A coleta seletiva é um processo importante na gestão de resíduos sólidos. Quais são os principais objetivos da coleta seletiva?", new String[]{"Aumentar o volume de lixo enviado para aterros sanitários.", "Reduzir a poluição do ar e da água, economizar recursos naturais e diminuir a quantidade de lixo em aterros sanitários.", "Incentivar a produção de mais lixo.", "Apenas separar o lixo por cor sem benefício ambiental real.", "Transferir o lixo para outros países."}, "Reduzir a poluição do ar e da água, economizar recursos naturais e diminuir a quantidade de lixo em aterros sanitários.")
+        };
+        zoneList.add(new Zone("Montanha do Desperdício", 1, 20, montanhaDesperdicioQuestions, new Boss("Golem de Sucata", golemSucataBossQuestions)));
+
+        // --- Segundo Mundo: Terras Obscuras (Fontes de energia Limpa/Sustentável) ---
+        // Vilão: Demônio Nuclear
+        Question[] terrasObscurasQuestions = {
+            new Question("Em qual cidade foi causada o maior acidente nuclear da história?", new String[]{"Hiroshima.", "Nagasaki.", "Chernobyl.", "Fukushima.", "Three Mile Island."}, "Chernobyl."),
+            new Question("Em qual das opções abaixo, a energia nuclear é mais usada?", new String[]{"Geração de energia elétrica e propulsão de submarinos.", "Cozinhar alimentos e aquecer casas.", "Construção de carros e fabricação de roupas.", "Produção de brinquedos e jogos.", "Limpeza de rios e lagos."}, "Geração de energia elétrica e propulsão de submarinos."),
+            new Question("A energia eólica é uma das fontes de energia renovável que mais cresce no mundo. Qual é a principal vantagem da energia eólica?", new String[]{"Não causa impacto ambiental, pois não emite gases de efeito estufa durante a operação.", "É a energia mais barata para ser produzida.", "Pode ser usada em qualquer lugar do mundo.", "Não ocupa espaço na paisagem.", "É a mais fácil de armazenar."}, "Não causa impacto ambiental, pois não emite gases de efeito estufa durante a operação.")
+        };
+        Question[] demonioNuclearBossQuestions = {
+            new Question("Qual é a relação entre as energias renováveis e o desenvolvimento sustentável?", new String[]{"As energias renováveis são mais caras e não contribuem para o desenvolvimento sustentável.", "As energias renováveis diminuem a dependência de combustíveis fósseis e reduzem as emissões de gases de efeito estufa, promovendo um desenvolvimento mais equilibrado.", "Não há relação, pois o desenvolvimento sustentável foca apenas na economia.", "As energias renováveis aumentam a poluição do ar.", "As energias renováveis são apenas uma moda passageira sem impacto real."}, "As energias renováveis diminuem a dependência de combustíveis fósseis e reduzem as emissões de gases de efeito estufa, promovendo um desenvolvimento mais equilibrado.")
+        };
+        zoneList.add(new Zone("Terras Obscuras", 21, 40, terrasObscurasQuestions, new Boss("Demônio Nuclear", demonioNuclearBossQuestions)));
+
+        // --- Terceiro Mundo: Deserto da Escassez (Uso Consciente da Água) ---
+        // Vilão: Kraken da Seca
+        Question[] desertoEscassezQuestions = {
+            new Question("Qual é a principal fonte de água doce no planeta?", new String[]{"Oceanos.", "Lençóis freáticos e aquíferos.", "Geleiras e calotas polares.", "Rios e lagos.", "Chuva."}, "Geleiras e calotas polares."),
+            new Question("O que é pegada hídrica?", new String[]{"A quantidade de água que uma pessoa bebe por dia.", "A quantidade de água necessária para produzir bens e serviços.", "A quantidade de água em um deserto.", "A quantidade de água desperdiçada em casa.", "A quantidade de água que os rios carregam."}, "A quantidade de água necessária para produzir bens e serviços."),
+            new Question("Qual é a principal causa da poluição da água?", new String[]{"Despejo de esgoto doméstico e industrial sem tratamento.", "Chuva ácida.", "Pesca excessiva.", "Construção de barragens.", "Uso de energia solar."}, "Despejo de esgoto doméstico e industrial sem tratamento.")
+        };
+        Question[] krakenSecaBossQuestions = {
+            new Question("Como a escassez de água pode afetar a produção de alimentos?", new String[]{"Aumentando a produtividade agrícola devido à falta de chuva.", "Prejudicando as colheitas e a pecuária, levando à insegurança alimentar.", "Não afeta a produção de alimentos, pois a água é abundante.", "Melhorando a qualidade dos alimentos.", "Tornando os alimentos mais baratos."}, "Prejudicando as colheitas e a pecuária, levando à insegurança alimentar.")
+        };
+        zoneList.add(new Zone("Deserto da Escassez", 41, 60, desertoEscassezQuestions, new Boss("Kraken da Seca", krakenSecaBossQuestions)));
+
+        // --- Quarto Mundo: Floresta Incendiada (Desmatamento e Queimadas) ---
+        // Vilão: Incendiários
+        Question[] florestaIncendiadaQuestions = {
+            new Question("Quais são as principais causas do desmatamento na Amazônia?", new String[]{"Crescimento urbano e industrialização descontrolada.", "Expansão da agricultura e pecuária, exploração madeireira ilegal e grilagem de terras.", "Aumento da população de animais silvestres.", "Desastres naturais como terremotos.", "Chuva ácida."}, "Expansão da agricultura e pecuária, exploração madeireira ilegal e grilagem de terras."),
+            new Question("Como o desmatamento pode afetar o clima global?", new String[]{"Aumentando a produção de oxigênio e diminuindo a temperatura.", "Reduzindo a biodiversidade e liberando gases de efeito estufa, contribuindo para o aquecimento global.", "Intensificando as chuvas na floresta.", "Facilitando a infiltração da água no solo.", "Tornando os rios mais limpos."}, "Reduzindo a biodiversidade e liberando gases de efeito estufa, contribuindo para o aquecimento global.")
+        };
+        Question[] incendiariosBossQuestions = {
+            new Question("Como o desmatamento afeta o regime hídrico e as chuvas na região amazônica?", new String[]{"Intensificam as chuvas na floresta.", "Reduzem a evapotranspiração, diminuem a formação de chuvas e afetam o regime hídrico regional.", "Facilitam a infiltração da água no solo, fortalecendo os lençóis freáticos.", "Tornam os rios mais limpos ao evaporar impurezas com o calor.", "Não há impacto significativo."}, "Reduzem a evapotranspiração, diminuem a formação de chuvas e afetam o regime hídrico regional.")
+        };
+        zoneList.add(new Zone("Floresta Incendiada", 61, 80, florestaIncendiadaQuestions, new Boss("Incendiários", incendiariosBossQuestions)));
+
+        // --- Quinto Mundo: Santuário em Ruínas das Capivaras (Preservação da Biodiversidade) ---
+        // Vilão: Caçadores Ilegais
+        Question[] santuarioCapivarasQuestions = {
+            new Question("Quais são os principais animais vítimas de caçadores ilegais?", new String[]{"Veado-catingueiro, boi, papagaio-do-mato e galinha-d’água, por sua capacidade de adaptação.", "Capivara, vaca, pombo e cachorro-do-mato, devido ao controle de pragas urbanas.", "Tamanduá-bandeira, peixe-boi, minhoca e coruja, usados como animais domésticos.", "Jacaré, jiboia, cavalo-marinho e siri, por sua toxina venenosa.", "Onça-pintada, tatu-bola, jacaré e arara-azul, por causa de sua pele, carne ou valor no mercado ilegal."}, "Onça-pintada, tatu-bola, jacaré e arara-azul, por causa de sua pele, carne ou valor no mercado ilegal."),
+            new Question("Como o tráfico de animais silvestres afeta o equilíbrio ecológico dos biomas brasileiros?", new String[]{"Gera alterações locais, mas contribui para manter o controle populacional de algumas espécies.", "Pode interferir nos processos naturais de reprodução e dispersão, afetando cadeias ecológicas de forma silenciosa, mas significativa.", "Não causa efeitos diretos significativos, desde que os animais não sejam retirados em grande número.", "Pode ser compensado pela reprodução em cativeiro.", "Apenas afeta espécies de pequeno porte."}, "Pode interferir nos processos naturais de reprodução e dispersão, afetando cadeias ecológicas de forma silenciosa, mas significativa.")
+        };
+        Question[] cacadoresIlegaisBossQuestions = {
+            new Question("Quais são as consequências da perda de biodiversidade para o meio ambiente e para a humanidade?", new String[]{"Não há consequências, pois a natureza se adapta rapidamente.", "Aumenta a resistência dos ecossistemas a mudanças climáticas.", "Compromete serviços ecossistêmicos essenciais, como polinização, purificação da água e controle de pragas, afetando a saúde humana e a economia.", "Gera novas espécies mais resistentes.", "Melhora a qualidade do solo."}, "Compromete serviços ecossistêmicos essenciais, como polinização, purificação da água e controle de pragas, afetando a saúde humana e a economia.")
+        };
+        zoneList.add(new Zone("Santuário em Ruínas das Capivaras", 81, 100, santuarioCapivarasQuestions, new Boss("Caçadores Ilegais", cacadoresIlegaisBossQuestions)));
+
+        return zoneList;
     }
 
     public Zone getZoneByPosition(int position) {
@@ -88,12 +86,20 @@ public class Board {
         return null;
     }
 
-    // Método para pegar uma pergunta específica para a casa atual
     public Question getQuestionForHouse(int position) {
         Zone currentZone = getZoneByPosition(position);
         if (currentZone != null) {
-            int index = position - currentZone.getStartHouse();
-            if (index < currentZone.getQuestions().length) {
+            // A lógica de mapear perguntas da zona para casas específicas é mais complexa.
+            // Aqui, estamos simplesmente pegando uma pergunta do array de perguntas da zona.
+            // Para ter perguntas *diferentes* em casas *diferentes* dentro de uma zona,
+            // você precisaria de um mapa `Map<Integer, Question>` dentro da `Zone`
+            // onde a chave é o número da casa e o valor é a pergunta.
+            // Ou, para simplificar, apenas uma pergunta aleatória da zona é feita.
+            
+            // Para o propósito de "ter perguntas da zona", podemos ciclar as perguntas disponíveis
+            // ou pegar uma aleatoriamente. Pegar por índice baseado na posição é mais determinístico.
+            int index = (position - currentZone.getStartHouse()) % currentZone.getQuestions().length;
+            if (index >= 0 && index < currentZone.getQuestions().length) {
                 return currentZone.getQuestions()[index];
             }
         }

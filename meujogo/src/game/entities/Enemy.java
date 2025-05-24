@@ -1,5 +1,6 @@
 package meujogo.src.game.entities;
 
+// Se esta classe não for utilizada em nenhuma outra parte do projeto, considere removê-la.
 public class Enemy {
     private String name;
     private int difficulty;

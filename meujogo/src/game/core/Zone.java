@@ -7,8 +7,9 @@ public class Zone {
     private String name;
     private int startHouse;
     private int endHouse;
-    private Question[] questions;
+    private Question[] questions; // Perguntas gerais da zona/casa
     private Boss boss;
+    private boolean bossDefeated; // Novo atributo para controlar o boss
 
     public Zone(String name, int startHouse, int endHouse, Question[] questions, Boss boss) {
         this.name = name;
@@ -16,6 +17,7 @@ public class Zone {
         this.endHouse = endHouse;
         this.questions = questions;
         this.boss = boss;
+        this.bossDefeated = false; // Boss não derrotado por padrão
     }
 
     public String getName() {
@@ -40,5 +42,13 @@ public class Zone {
 
     public int getEndHouse() {
         return endHouse;
+    }
+
+    public boolean isBossDefeated() {
+        return bossDefeated;
+    }
+
+    public void setBossDefeated(boolean bossDefeated) {
+        this.bossDefeated = bossDefeated;
     }
 }

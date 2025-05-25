@@ -1,8 +1,9 @@
-package meujogo.src.game.core;
+package meujogo.core;
 
-import meujogo.src.game.entities.Question;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import meujogo.entities.Question;
 
 public class Quiz {
 
@@ -17,7 +18,7 @@ public class Quiz {
     public boolean askQuestion(Question question) {
         int attempts = MAX_ATTEMPTS;
         while (attempts > 0) {
-            System.out.println("\n📜 Pergunta:");
+            System.out.println("\n Pergunta:");
             System.out.println(question.getQuestionText());
 
             String[] options = question.getOptions();
@@ -31,13 +32,13 @@ public class Quiz {
             try {
                 choice = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
-                System.out.println("⚠️ Entrada inválida. Por favor, digite um NÚMERO.");
+                System.out.println(" Entrada inválida. Por favor, digite um NÚMERO.");
                 attempts--;
                 continue;
             }
 
             if (choice < 1 || choice > options.length) {
-                System.out.println("⚠️ Opção inválida. Digite um número entre 1 e " + options.length + ".");
+                System.out.println(" Opção inválida. Digite um número entre 1 e " + options.length + ".");
                 attempts--;
                 continue;
             }
@@ -45,14 +46,14 @@ public class Quiz {
             String selectedAnswer = options[choice - 1];
 
             if (question.checkAnswer(selectedAnswer)) {
-                System.out.println("✅ Resposta correta!");
+                System.out.println(" Resposta correta!");
                 return true;
             } else {
                 attempts--;
                 if (attempts > 0) {
-                    System.out.println("❌ Resposta errada. Tentativas restantes: " + attempts);
+                    System.out.println(" Resposta errada. Tentativas restantes: " + attempts);
                 } else {
-                    System.out.println("😢 Você errou todas as tentativas.");
+                    System.out.println(" Você errou todas as tentativas.");
                 }
             }
         }

@@ -1,4 +1,4 @@
-package meujogo.src.game.entities;
+package meujogo.entities;
 
 public class Question {
     private String questionText;

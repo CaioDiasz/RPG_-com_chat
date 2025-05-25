@@ -1,4 +1,4 @@
-package meujogo.src.game.core;
+package meujogo.core;
 
 public class Main {
     public static void main(String[] args) {

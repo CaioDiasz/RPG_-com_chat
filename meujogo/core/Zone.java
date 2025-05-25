@@ -1,12 +1,12 @@
-package meujogo.src.game.core;
-
-import meujogo.src.game.entities.Boss;
-import meujogo.src.game.entities.Question;
+package meujogo.core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
+import meujogo.entities.Boss;
+import meujogo.entities.Question;
 
 public class Zone {
     private String name;

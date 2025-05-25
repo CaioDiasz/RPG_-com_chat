@@ -1,9 +1,10 @@
-package meujogo.src.game.entities;
+package meujogo.entities;
 
-import meujogo.src.game.core.Zone;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random; // Embora não usado diretamente aqui, mantemos se for usado em Zone ou Question
+
+import meujogo.core.Zone;
 
 public class Board {
     private List<Zone> zones;

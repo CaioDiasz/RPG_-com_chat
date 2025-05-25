@@ -1,4 +1,4 @@
-package meujogo.src.game.entities;
+package meujogo.entities;
 
 // Se esta classe não for utilizada em nenhuma outra parte do projeto, considere removê-la.
 public class Enemy {
